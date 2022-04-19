@@ -5,7 +5,7 @@ using UnityEngine;
 public class Principal : MonoBehaviour
 {
 
-    Gema[,] grid;
+    Cuadricula[,] grid;
 
     // Start is called before the first frame update
     void Start()
