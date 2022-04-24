@@ -10,3 +10,7 @@ Creada las clases TipoGema y Cuadrucula.
 La clase Gema indicará la posición de cada una y su tipo. También será la que nos permita hacer los movimientos.
 La clase Cuadricula nos pondrá un fondo a cuadros y colocará cada gema encima de un cuadrado.
 La clase TipoGema nos indicará las catacterísticas de la gema (como el tipo, el sprite que tendrá, etc).
+
+### 24/04/2022 Tercera subida
+Añadida una propiedad para el movimiento de las gemas.
+Añadida la función para rellenar los cuadrados con distintos tipos de gemas (contiene un error del tipo NullPointerException)
