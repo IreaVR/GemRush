@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static TipoGema;
 
 public class Gema : MonoBehaviour
 {
@@ -72,10 +73,24 @@ public class Gema : MonoBehaviour
 
     }
 
+    private TipoGema colorComponente;
+
+    //colorPiece
+    public TipoGema ColorComponente
+    {
+
+        get
+        {
+            return colorComponente;
+        }
+
+    }
+
     void Awake()
     {
 
         movimiento = GetComponent<MovimientoPieza>();
+        colorComponente = GetComponent<TipoGema>();
 
     }
 
@@ -96,6 +111,11 @@ public class Gema : MonoBehaviour
 
     }
 
+    public bool sePinta()
+    {
+        return colorComponente != null;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -107,4 +127,7 @@ public class Gema : MonoBehaviour
     {
         
     }
+
+
+
 }

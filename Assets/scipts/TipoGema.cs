@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class TipoGema : MonoBehaviour
 {
@@ -35,7 +34,7 @@ public class TipoGema : MonoBehaviour
     {
         set
         {
-            //SetTipoGema(value);
+            SetColor(value);
         }
         get
         {
@@ -44,10 +43,21 @@ public class TipoGema : MonoBehaviour
 
     }
 
+    public int NumColores
+    {
+        get
+        {
+            return tipoSprites.Length;
+        }
+    }
+
+    private SpriteRenderer sprite;
     private Dictionary<Tipo, Sprite> tipoSpriteDiccionario;
 
     private void Awake()
     {
+
+        sprite = /*transform.Find("gema").*/GetComponent<SpriteRenderer>();
 
         tipoSpriteDiccionario = new Dictionary<Tipo, Sprite>();
 
@@ -79,4 +89,17 @@ public class TipoGema : MonoBehaviour
     {
         
     }
+
+    public void SetColor(Tipo colorGema)
+    {
+
+        this.colorGema = colorGema;
+
+        if(tipoSpriteDiccionario.ContainsKey(colorGema))
+        {
+            sprite.sprite = tipoSpriteDiccionario[colorGema];
+        }
+
+    }
+
 }
