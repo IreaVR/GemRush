@@ -14,3 +14,6 @@ La clase TipoGema nos indicará las catacterísticas de la gema (como el tipo, e
 ### 24/04/2022 Tercera subida
 Añadida una propiedad para el movimiento de las gemas.
 Añadida la función para rellenar los cuadrados con distintos tipos de gemas (contiene un error del tipo NullPointerException)
+
+### 25/04/2022 Cuarta subida
+Añadida una animación para rellenar la cuadrícula.
