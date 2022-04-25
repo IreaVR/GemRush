@@ -24,6 +24,7 @@ public class Cuadricula : MonoBehaviour
     };
 
     public int tamX, tamY;
+    public float tiempoRellenar;
 
     public GemaPrefab[] gemaPrefabs;
     public GameObject fondoPrefab;
@@ -93,7 +94,7 @@ public class Cuadricula : MonoBehaviour
             }
         }
 
-        Fill();
+        StartCoroutine(Fill());
 
     }
 
@@ -120,12 +121,12 @@ public class Cuadricula : MonoBehaviour
 
     }
 
-    public void Fill()
+    public IEnumerator Fill()
     {
 
         while (FillStep())
         {
-
+            yield return new WaitForSeconds(tiempoRellenar);
         }
 
     }
@@ -150,7 +151,7 @@ public class Cuadricula : MonoBehaviour
                     if (gemaInferior.Tipo == Tipo.EMPTY)
                     {
 
-                        gema.Movimiento.Movimiento(x, y + 1);
+                        gema.Movimiento.Mover(x, y + 1, tiempoRellenar);
                         gemas[x, y + 1] = gema;
                         SpawnNuevaGema(x, y, Tipo.EMPTY);
                         gemaMovida = true;
@@ -176,7 +177,7 @@ public class Cuadricula : MonoBehaviour
 
                 gemas[i, 0] = nuevaGema.GetComponent<Gema>();
                 gemas[i, 0].Constructor(i, -1, this, Tipo.NORMAL);
-                gemas[i, 0].Movimiento.Movimiento(i, 0);
+                gemas[i, 0].Movimiento.Mover(i, 0, tiempoRellenar);
                 gemas[i, 0].ColorComponente.SetColor((TipoGema.Tipo)Random.Range(0, gemas[i, 0].ColorComponente.NumColores));
                 gemaMovida = true;
 
