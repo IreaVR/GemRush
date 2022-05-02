@@ -309,11 +309,23 @@ public class Cuadricula : MonoBehaviour
             gemas[gema1.X, gema1.Y] = gema2;
             gemas[gema2.X, gema2.Y] = gema1;
 
-            int gema1X = gema1.X;
-            int gema1Y = gema1.Y;
+            if (GetCombinacion(gema1, gema2.X, gema2.Y) != null || GetCombinacion(gema2, gema1.X, gema1.Y) != null)
+            {
 
-            gema1.Movimiento.Mover(gema2.X, gema2.Y, tiempoRellenar);
-            gema2.Movimiento.Mover(gema1X, gema1Y, tiempoRellenar);
+                int gema1X = gema1.X;
+                int gema1Y = gema1.Y;
+
+                gema1.Movimiento.Mover(gema2.X, gema2.Y, tiempoRellenar);
+                gema2.Movimiento.Mover(gema1X, gema1Y, tiempoRellenar);
+           
+            } 
+            else
+            {
+
+                gemas[gema1.X, gema1.Y] = gema1;
+                gemas[gema2.X, gema2.Y] = gema2;
+
+            }
 
         }
     }
@@ -343,6 +355,242 @@ public class Cuadricula : MonoBehaviour
         }
 
     }
+
+    public List<Gema> GetCombinacion(Gema gema, int nuevaX, int nuevaY)
+    {
+
+        if (gema.sePinta())
+        {
+
+            TipoGema.Tipo color = gema.ColorComponente.ColorGema;
+            List<Gema> gemasHorizontales = new List<Gema>();
+            List<Gema> gemasVerticales = new List<Gema>();
+            List<Gema> gemasCombinadas = new List<Gema>();
+
+            //comprobacion horizontales
+            gemasHorizontales.Add(gema);
+
+            for (int i = 0; i <= 1; i++)
+            {
+                for (int xOffset = 1; xOffset < tamX; xOffset++)
+                {
+
+                    int x;
+
+                    if (i == 0) //izquierda
+                    {
+                        x = nuevaX - xOffset;
+                    }
+                    else //derecha
+                    {
+                        x = nuevaX + xOffset;
+                    }
+
+                    if (x<0 || x >= tamX)
+                    {
+                        break;
+                    }
+
+                    if (gemas[x, nuevaY].sePinta() && gemas[x, nuevaY].ColorComponente.ColorGema == color)
+                    {
+                        gemasHorizontales.Add(gemas[x, nuevaY]);
+                    } 
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (gemasHorizontales.Count >= 3)
+            {
+                for (int i = 0; i < gemasHorizontales.Count; i++)
+                {
+                    gemasCombinadas.Add(gemasHorizontales[i]);
+                }
+            }
+
+            //combinacion vertical en forma de L y T
+            if (gemasHorizontales.Count >= 3)
+            {
+
+                for (int i = 0; i < gemasHorizontales.Count; i++)
+                {
+                    for (int j = 0; j <= 1; j++)
+                    {
+                        for (int yOffset = 1; yOffset < tamY; yOffset++)
+                        {
+                            int y;
+
+                            if (j==0) //arriba
+                            {
+                                y = nuevaY - yOffset;
+                            }
+                            else //abajo
+                            {
+                                y = nuevaY + yOffset;
+                            }
+
+                            if (yOffset < 0 || yOffset >= tamY)
+                            {
+                                break;
+                            }
+                            
+                            if (gemas[gemasHorizontales[i].X, y].sePinta() && gemas[gemasHorizontales[i].X, y].ColorComponente.ColorGema == color)
+                            {
+                                gemasVerticales.Add(gemas[gemasHorizontales[i].X, y]);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (gemasVerticales.Count < 2)
+                    {
+                        gemasVerticales.Clear();
+                    }
+                    else
+                    {
+                        for (int j = 0; j < gemasVerticales.Count; j++)
+                        {
+                            gemasCombinadas.Add(gemasVerticales[j]);
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+
+            if (gemasCombinadas.Count >= 3)
+            {
+
+                return gemasCombinadas;
+
+            }
+
+            //comprobacion verticales
+            gemasHorizontales.Clear();
+            gemasVerticales.Clear();
+            gemasVerticales.Add(gema);
+
+            for (int i = 0; i <= 1; i++)
+            {
+                for (int yOffset = 1; yOffset < tamX; yOffset++)
+                {
+
+                    int y;
+
+                    if (i == 0) //arriba
+                    {
+                        y = nuevaX - yOffset;
+                    }
+                    else //abajo
+                    {
+                        y = nuevaX + yOffset;
+                    }
+
+                    if (y < 0 || y >= tamY)
+                    {
+                        break;
+                    }
+
+                    if (gemas[nuevaX, y].sePinta() && gemas[nuevaX, y].ColorComponente.ColorGema == color)
+                    {
+                        gemasVerticales.Add(gemas[nuevaX, y]);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (gemasVerticales.Count >= 3)
+            {
+                for (int i = 0; i < gemasVerticales.Count; i++)
+                {
+                    gemasCombinadas.Add(gemasVerticales[i]);
+                }
+            }
+
+            //combinacion horizontal en forma de L y T
+            if (gemasVerticales.Count >= 3)
+            {
+
+                for (int i = 0; i < gemasVerticales.Count; i++)
+                {
+                    for (int j = 0; j <= 1; j++)
+                    {
+                        for (int xOffset = 1; xOffset < tamX; xOffset++)
+                        {
+                            int x;
+
+                            if (j == 0) //izquierda
+                            {
+                                x = nuevaX - xOffset;
+                            }
+                            else //derecha
+                            {
+                                x = nuevaX + xOffset;
+                            }
+
+                            if (x < 0 || x >= tamX)
+                            {
+                                break;
+                            }
+
+                            if (gemas[x, gemasVerticales[i].Y].sePinta() && gemas[x, gemasVerticales[i].Y].ColorComponente.ColorGema == color)
+                            {
+                                gemasVerticales.Add(gemas[x, gemasVerticales[i].Y]);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (gemasHorizontales.Count < 2)
+                    {
+                        gemasHorizontales.Clear();
+                    }
+                    else
+                    {
+                        for (int j = 0; j < gemasHorizontales.Count; j++)
+                        {
+                            gemasCombinadas.Add(gemasHorizontales[j]);
+                        }
+                        break;
+                    }
+
+                }
+
+            }
+
+            if (gemasCombinadas.Count >= 3)
+            {
+
+                return gemasCombinadas;
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+
+
+
+
+
+
+
+
 
 
 }
