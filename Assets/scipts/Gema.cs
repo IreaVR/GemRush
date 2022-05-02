@@ -116,6 +116,21 @@ public class Gema : MonoBehaviour
         return colorComponente != null;
     }
 
+    void OnMouseEnter()
+    {
+        cuad.GemaIntroducida(this);
+    }
+
+    void OnMouseDown()
+    {
+        cuad.GemaPulsada(this);
+    }
+
+    void OnMouseUp()
+    {
+        cuad.GemaLiberada();
+    }
+
     // Start is called before the first frame update
     void Start()
     {

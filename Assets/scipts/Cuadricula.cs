@@ -11,8 +11,9 @@ public class Cuadricula : MonoBehaviour
     {
         EMPTY,
         NORMAL,
-        COUNT,
-    };
+        MURO,  //esto es para bloquear el paso a las gemas
+        COUNT
+    }
 
     [System.Serializable]
     public struct GemaPrefab
@@ -21,7 +22,7 @@ public class Cuadricula : MonoBehaviour
         public Tipo tipo;
         public GameObject prefab;
 
-    };
+    }
 
     public int tamX, tamY;
     public float tiempoRellenar;
@@ -33,7 +34,10 @@ public class Cuadricula : MonoBehaviour
 
     private Gema[,] gemas;
 
-    //public Manager manager;
+    private bool inverso = false;
+
+    private Gema gemaPulsada;
+    private Gema gemaIntroducida;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +74,7 @@ public class Cuadricula : MonoBehaviour
         {
             for (int j = 0; j < tamY; j++)
             {
+
                 //GameObject nuevaGema = (GameObject)Instantiate(gemaPrefabDiccionario[Tipo.NORMAL], Vector3.zero, Quaternion.identity);
                 //nuevaGema.name = "Gema(" + i + "," + j + ")";
                 //nuevaGema.transform.parent = transform;
@@ -94,6 +99,29 @@ public class Cuadricula : MonoBehaviour
             }
         }
 
+        //estas lienas son para poner la localizacion del muro y para decir que no aparezcan gemas debajo
+        //error null object
+        //Destroy(gemas[1, 4].gameObject);
+        //SpawnNuevaGema(1, 4, Tipo.MURO);    
+
+        //Destroy(gemas[2, 4].gameObject);
+        //SpawnNuevaGema(2, 4, Tipo.MURO);
+
+        //Destroy(gemas[3, 4].gameObject);
+        //SpawnNuevaGema(3, 4, Tipo.MURO);
+
+        //Destroy(gemas[5, 4].gameObject);
+        //SpawnNuevaGema(5, 4, Tipo.MURO);
+
+        //Destroy(gemas[6, 4].gameObject);
+        //SpawnNuevaGema(6, 4, Tipo.MURO);
+
+        //Destroy(gemas[7, 4].gameObject);
+        //SpawnNuevaGema(7, 4, Tipo.MURO);
+
+        //Destroy(gemas[4, 0].gameObject);
+        //SpawnNuevaGema(4, 0, Tipo.MURO);
+
         StartCoroutine(Fill());
 
     }
@@ -110,7 +138,9 @@ public class Cuadricula : MonoBehaviour
         GameObject nuevaGema = (GameObject)Instantiate(gemaPrefabDiccionario[tipo], PosicionCamara(x, y), Quaternion.identity);
         nuevaGema.transform.parent = transform;
         gemas[x, y] = nuevaGema.GetComponent<Gema>();
-        gemas[x, y].Constructor(x, y, this, tipo);
+        Debug.Log("x: "+x+" y: "+y+" cuadricula: "+this+" tipo: "+tipo);
+
+        gemas[x, y].Constructor(x, y, this, tipo);      //error NullReferennceException aqui
 
         return gemas[x, y];
     }
@@ -123,9 +153,10 @@ public class Cuadricula : MonoBehaviour
 
     public IEnumerator Fill()
     {
-
+        
         while (FillStep())
         {
+            inverso = !inverso;
             yield return new WaitForSeconds(tiempoRellenar);
         }
 
@@ -138,8 +169,14 @@ public class Cuadricula : MonoBehaviour
 
         for (int y = tamY - 2; y >= 0; y--)
         {
-            for (int x = 0; x < tamX; x++)
+            for (int loopX = 0; loopX < tamX; loopX++)
             {
+                int x = loopX;
+
+                if (inverso)
+                {
+                    x = tamX - 1 - loopX;
+                }
 
                 Gema gema = gemas[x, y];
 
@@ -150,7 +187,7 @@ public class Cuadricula : MonoBehaviour
 
                     if (gemaInferior.Tipo == Tipo.EMPTY)
                     {
-
+                        Destroy(gemaInferior.gameObject);
                         gema.Movimiento.Mover(x, y + 1, tiempoRellenar);
                         gemas[x, y + 1] = gema;
                         SpawnNuevaGema(x, y, Tipo.EMPTY);
@@ -158,7 +195,75 @@ public class Cuadricula : MonoBehaviour
 
                     }
 
+                //esto es para rellenar debajo del obsaculo
+                } else
+                {
+
+                    for (int diag = -1; diag <= 1; diag++)
+                    {
+                        if (diag !=0)
+                        {
+
+                            int diagX = x + diag;
+
+                            if (inverso)
+                            {
+
+                                diagX = x - diag;
+
+                            }
+
+                            if (diagX>= 0 && diagX < tamX)
+                            {
+
+                                Gema gemaDiagonal = gemas[diagX, y + 1];
+
+                                if (gemaDiagonal.Tipo==Tipo.EMPTY)
+                                {
+
+                                    bool tieneGemaEncima = true;
+
+                                    for (int arribaY = y; arribaY >= 0; arribaY--)
+                                    {
+
+                                        Gema gemaArriba = gemas[diagX, arribaY];
+
+                                        if (gemaArriba.seMueve())
+                                        {
+                                            break;
+                                        } 
+                                        else if(!gemaArriba.seMueve() && gemaArriba.Tipo != Tipo.EMPTY)
+                                        {
+
+                                            tieneGemaEncima = false;
+                                            break;
+
+                                        }
+
+                                    }
+
+                                    if (!tieneGemaEncima)
+                                    {
+
+                                        Destroy(gemaDiagonal.gameObject);
+                                        gema.Movimiento.Mover(diagX, y + 1, tiempoRellenar);
+                                        gemas[diagX, y + 1] = gema;
+                                        SpawnNuevaGema(x, y, Tipo.EMPTY);
+                                        gemaMovida = true;
+                                        break;
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+                    }
+
                 }
+
+
 
             }
 
@@ -167,11 +272,11 @@ public class Cuadricula : MonoBehaviour
         for (int i = 0; i < tamX; i++)
         {
 
-            Gema piezaInferior = gemas[i, 0];
+            Gema gemaInferior = gemas[i, 0];
 
-            if (piezaInferior.Tipo==Tipo.EMPTY)
+            if (gemaInferior.Tipo==Tipo.EMPTY)
             {
-
+                Destroy(gemaInferior.gameObject);
                 GameObject nuevaGema = (GameObject)Instantiate(gemaPrefabDiccionario[Tipo.NORMAL], PosicionCamara(i, -1), Quaternion.identity);
                 nuevaGema.transform.parent = transform;
 
@@ -188,4 +293,56 @@ public class Cuadricula : MonoBehaviour
         return gemaMovida;
 
     }
+
+    public bool EsAdyacente(Gema gema1, Gema gema2)
+    {
+
+        return (gema1.X == gema2.X && (int)Mathf.Abs(gema1.Y - gema2.Y) == 1) || (gema1.Y == gema2.Y && (int)Mathf.Abs(gema1.X - gema2.X) == 1);
+
+    }
+
+    public void IntercambioGemas(Gema gema1, Gema gema2)
+    {
+        if (gema1.seMueve() && gema2.seMueve())
+        {
+            
+            gemas[gema1.X, gema1.Y] = gema2;
+            gemas[gema2.X, gema2.Y] = gema1;
+
+            int gema1X = gema1.X;
+            int gema1Y = gema1.Y;
+
+            gema1.Movimiento.Mover(gema2.X, gema2.Y, tiempoRellenar);
+            gema2.Movimiento.Mover(gema1X, gema1Y, tiempoRellenar);
+
+        }
+    }
+
+    public void GemaPulsada(Gema gema)
+    {
+
+        gemaPulsada = gema;
+
+    }
+
+    public void GemaIntroducida(Gema gema)
+    {
+
+        gemaIntroducida = gema;
+
+    }
+
+    public void GemaLiberada()
+    {
+
+        if (EsAdyacente(gemaPulsada, gemaIntroducida))
+        {
+
+            IntercambioGemas(gemaPulsada, gemaIntroducida);
+
+        }
+
+    }
+
+
 }
