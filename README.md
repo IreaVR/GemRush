@@ -18,3 +18,6 @@ Añadida la función para rellenar los cuadrados con distintos tipos de gemas (c
 ### 25/04/2022 Cuarta subida
 Solucionado el error de la subida anterior.
 Añadida una animación para rellenar la cuadrícula con distintas gemas.
+
+### 02/05/2022 Quinta subida
+Añadido el código necesario que permita intercambiar gemas de posición. Por el momento se intercambiarán si o si, no cuando hagan una línea.
