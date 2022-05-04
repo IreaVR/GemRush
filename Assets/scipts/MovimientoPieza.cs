@@ -16,18 +16,18 @@ public class MovimientoPieza : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Mover(int x, int y, float tiempo)
     {
-        if (movimientoCoroutine!=null)
+        if (movimientoCoroutine != null)
         {
             StopCoroutine(movimientoCoroutine);
         }
@@ -45,7 +45,7 @@ public class MovimientoPieza : MonoBehaviour
         Vector3 posInicial = transform.position;
         Vector3 posFinal = gema.Cuad.PosicionCamara(x, y);
 
-        for (float i = 0; i <= 1* tiempo; i+=Time.deltaTime)
+        for (float i = 0; i <= 1 * tiempo; i += Time.deltaTime)
         {
             gema.transform.position = Vector3.Lerp(posInicial, posFinal, i / tiempo);
             yield return 0;

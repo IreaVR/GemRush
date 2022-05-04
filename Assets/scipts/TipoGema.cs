@@ -10,8 +10,8 @@ public class TipoGema : MonoBehaviour
 
         AZUL,
         VERDE,
-        ROJA, 
-        NARANJA, 
+        ROJA,
+        NARANJA,
         ANY,
         COUNT
 
@@ -81,13 +81,13 @@ public class TipoGema : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void SetColor(Tipo colorGema)
@@ -95,7 +95,7 @@ public class TipoGema : MonoBehaviour
 
         this.colorGema = colorGema;
 
-        if(tipoSpriteDiccionario.ContainsKey(colorGema))
+        if (tipoSpriteDiccionario.ContainsKey(colorGema))
         {
             sprite.sprite = tipoSpriteDiccionario[colorGema];
         }

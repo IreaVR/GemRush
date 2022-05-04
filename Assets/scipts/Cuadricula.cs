@@ -75,25 +75,6 @@ public class Cuadricula : MonoBehaviour
             for (int j = 0; j < tamY; j++)
             {
 
-                //GameObject nuevaGema = (GameObject)Instantiate(gemaPrefabDiccionario[Tipo.NORMAL], Vector3.zero, Quaternion.identity);
-                //nuevaGema.name = "Gema(" + i + "," + j + ")";
-                //nuevaGema.transform.parent = transform;
-
-                //gemas[i, j] = nuevaGema.GetComponent<Gema>();
-
-                //gemas[i, j].Constructor(i, j, this, Tipo.NORMAL);
-
-                //if (gemas[i, j].seMueve())
-                //{
-
-                //    gemas[i, j].Movimiento.Movimiento(i, j);
-
-                //}
-
-                //if (gemas[i, j].sePinta())
-                //{                                                       
-                //    gemas[i, j].ColorComponente.SetColor((TipoGema.Tipo)Random.Range(0, gemas[i, j].ColorComponente.NumColores));
-                //}
                 SpawnNuevaGema(i, j, Tipo.EMPTY);
 
             }
@@ -102,7 +83,7 @@ public class Cuadricula : MonoBehaviour
         //estas lienas son para poner la localizacion del muro y para decir que no aparezcan gemas debajo
         //error null object
         //Destroy(gemas[1, 4].gameObject);
-        //SpawnNuevaGema(1, 4, Tipo.MURO);    
+        //SpawnNuevaGema(1, 4, Tipo.MURO);
 
         //Destroy(gemas[2, 4].gameObject);
         //SpawnNuevaGema(2, 4, Tipo.MURO);
@@ -129,7 +110,7 @@ public class Cuadricula : MonoBehaviour
     public Vector2 PosicionCamara(int x, int y)
     {
 
-        return new Vector2(transform.position.x - tamX / 2.0f + x, transform.position.y - tamY / 2.0f + y);
+        return new Vector2(transform.position.x - tamX / 2.0f + x, transform.position.y + tamY / 2.0f - y);
 
     }
 
@@ -138,9 +119,9 @@ public class Cuadricula : MonoBehaviour
         GameObject nuevaGema = (GameObject)Instantiate(gemaPrefabDiccionario[tipo], PosicionCamara(x, y), Quaternion.identity);
         nuevaGema.transform.parent = transform;
         gemas[x, y] = nuevaGema.GetComponent<Gema>();
-        Debug.Log("x: "+x+" y: "+y+" cuadricula: "+this+" tipo: "+tipo);
+        Debug.Log("x: " + x + " y: " + y + " cuadricula: " + this + " tipo: " + tipo);
 
-        gemas[x, y].Constructor(x, y, this, tipo);      //error NullReferennceException aqui
+        gemas[x, y].Constructor(x, y, this, tipo);  
 
         return gemas[x, y];
     }
@@ -153,12 +134,23 @@ public class Cuadricula : MonoBehaviour
 
     public IEnumerator Fill()
     {
-        
-        while (FillStep())
+
+        bool rellenar = true;
+
+        while (rellenar)
         {
-            inverso = !inverso;
             yield return new WaitForSeconds(tiempoRellenar);
+
+            while (FillStep())
+            {
+                inverso = !inverso;
+                yield return new WaitForSeconds(tiempoRellenar);
+            }
+
+            //rellenar = LimpiarTodasCombinaciones();
+
         }
+
 
     }
 
@@ -195,13 +187,14 @@ public class Cuadricula : MonoBehaviour
 
                     }
 
-                //esto es para rellenar debajo del obsaculo
-                } else
+                    //esto es para rellenar debajo del obsaculo
+                }
+                else
                 {
 
                     for (int diag = -1; diag <= 1; diag++)
                     {
-                        if (diag !=0)
+                        if (diag != 0)
                         {
 
                             int diagX = x + diag;
@@ -213,12 +206,12 @@ public class Cuadricula : MonoBehaviour
 
                             }
 
-                            if (diagX>= 0 && diagX < tamX)
+                            if (diagX >= 0 && diagX < tamX)
                             {
 
                                 Gema gemaDiagonal = gemas[diagX, y + 1];
 
-                                if (gemaDiagonal.Tipo==Tipo.EMPTY)
+                                if (gemaDiagonal.Tipo == Tipo.EMPTY)
                                 {
 
                                     bool tieneGemaEncima = true;
@@ -231,8 +224,8 @@ public class Cuadricula : MonoBehaviour
                                         if (gemaArriba.seMueve())
                                         {
                                             break;
-                                        } 
-                                        else if(!gemaArriba.seMueve() && gemaArriba.Tipo != Tipo.EMPTY)
+                                        }
+                                        else if (!gemaArriba.seMueve() && gemaArriba.Tipo != Tipo.EMPTY)
                                         {
 
                                             tieneGemaEncima = false;
@@ -274,7 +267,7 @@ public class Cuadricula : MonoBehaviour
 
             Gema gemaInferior = gemas[i, 0];
 
-            if (gemaInferior.Tipo==Tipo.EMPTY)
+            if (gemaInferior.Tipo == Tipo.EMPTY)
             {
                 Destroy(gemaInferior.gameObject);
                 GameObject nuevaGema = (GameObject)Instantiate(gemaPrefabDiccionario[Tipo.NORMAL], PosicionCamara(i, -1), Quaternion.identity);
@@ -305,7 +298,7 @@ public class Cuadricula : MonoBehaviour
     {
         if (gema1.seMueve() && gema2.seMueve())
         {
-            
+
             gemas[gema1.X, gema1.Y] = gema2;
             gemas[gema2.X, gema2.Y] = gema1;
 
@@ -317,8 +310,10 @@ public class Cuadricula : MonoBehaviour
 
                 gema1.Movimiento.Mover(gema2.X, gema2.Y, tiempoRellenar);
                 gema2.Movimiento.Mover(gema1X, gema1Y, tiempoRellenar);
-           
-            } 
+
+                //LimpiarTodasCombinaciones();
+                //StartCoroutine(Fill());
+            }
             else
             {
 
@@ -355,7 +350,8 @@ public class Cuadricula : MonoBehaviour
         }
 
     }
-
+    
+    
     public List<Gema> GetCombinacion(Gema gema, int nuevaX, int nuevaY)
     {
 
@@ -386,7 +382,7 @@ public class Cuadricula : MonoBehaviour
                         x = nuevaX + xOffset;
                     }
 
-                    if (x<0 || x >= tamX)
+                    if (x < 0 || x >= tamX)
                     {
                         break;
                     }
@@ -394,7 +390,7 @@ public class Cuadricula : MonoBehaviour
                     if (gemas[x, nuevaY].sePinta() && gemas[x, nuevaY].ColorComponente.ColorGema == color)
                     {
                         gemasHorizontales.Add(gemas[x, nuevaY]);
-                    } 
+                    }
                     else
                     {
                         break;
@@ -411,58 +407,58 @@ public class Cuadricula : MonoBehaviour
             }
 
             //combinacion vertical en forma de L y T
-            if (gemasHorizontales.Count >= 3)
-            {
+            //if (gemasHorizontales.Count >= 3)
+            //{
 
-                for (int i = 0; i < gemasHorizontales.Count; i++)
-                {
-                    for (int j = 0; j <= 1; j++)
-                    {
-                        for (int yOffset = 1; yOffset < tamY; yOffset++)
-                        {
-                            int y;
+            //    for (int i = 0; i < gemasHorizontales.Count; i++)
+            //    {
+            //        for (int j = 0; j <= 1; j++)
+            //        {
+            //            for (int yOffset = 1; yOffset < tamY; yOffset++)
+            //            {
+            //                int y;
 
-                            if (j==0) //arriba
-                            {
-                                y = nuevaY - yOffset;
-                            }
-                            else //abajo
-                            {
-                                y = nuevaY + yOffset;
-                            }
+            //                if (j == 0) //arriba
+            //                {
+            //                    y = nuevaY - yOffset;
+            //                }
+            //                else //abajo
+            //                {
+            //                    y = nuevaY + yOffset;
+            //                }
 
-                            if (yOffset < 0 || yOffset >= tamY)
-                            {
-                                break;
-                            }
-                            
-                            if (gemas[gemasHorizontales[i].X, y].sePinta() && gemas[gemasHorizontales[i].X, y].ColorComponente.ColorGema == color)
-                            {
-                                gemasVerticales.Add(gemas[gemasHorizontales[i].X, y]);
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
+            //                if (yOffset < 0 || yOffset >= tamY)
+            //                {
+            //                    break;
+            //                }
 
-                    if (gemasVerticales.Count < 2)
-                    {
-                        gemasVerticales.Clear();
-                    }
-                    else
-                    {
-                        for (int j = 0; j < gemasVerticales.Count; j++)
-                        {
-                            gemasCombinadas.Add(gemasVerticales[j]);
-                        }
-                        break;
-                    }
+            //                if (gemas[gemasHorizontales[i].X, y].sePinta() && gemas[gemasHorizontales[i].X, y].ColorComponente.ColorGema == color)
+            //                {
+            //                    gemasVerticales.Add(gemas[gemasHorizontales[i].X, y]);
+            //                }
+            //                else
+            //                {
+            //                    break;
+            //                }
+            //            }
+            //        }
 
-                }
+            //        if (gemasVerticales.Count < 2)
+            //        {
+            //            gemasVerticales.Clear();
+            //        }
+            //        else
+            //        {
+            //            for (int j = 0; j < gemasVerticales.Count; j++)
+            //            {
+            //                gemasCombinadas.Add(gemasVerticales[j]);
+            //            }
+            //            break;
+            //        }
 
-            }
+            //    }
+
+            //}
 
             if (gemasCombinadas.Count >= 3)
             {
@@ -517,58 +513,58 @@ public class Cuadricula : MonoBehaviour
             }
 
             //combinacion horizontal en forma de L y T
-            if (gemasVerticales.Count >= 3)
-            {
+            //if (gemasVerticales.Count >= 3)
+            //{
 
-                for (int i = 0; i < gemasVerticales.Count; i++)
-                {
-                    for (int j = 0; j <= 1; j++)
-                    {
-                        for (int xOffset = 1; xOffset < tamX; xOffset++)
-                        {
-                            int x;
+            //    for (int i = 0; i < gemasVerticales.Count; i++)
+            //    {
+            //        for (int j = 0; j <= 1; j++)
+            //        {
+            //            for (int xOffset = 1; xOffset < tamX; xOffset++)
+            //            {
+            //                int x;
 
-                            if (j == 0) //izquierda
-                            {
-                                x = nuevaX - xOffset;
-                            }
-                            else //derecha
-                            {
-                                x = nuevaX + xOffset;
-                            }
+            //                if (j == 0) //izquierda
+            //                {
+            //                    x = nuevaX - xOffset;
+            //                }
+            //                else //derecha
+            //                {
+            //                    x = nuevaX + xOffset;
+            //                }
 
-                            if (x < 0 || x >= tamX)
-                            {
-                                break;
-                            }
+            //                if (x < 0 || x >= tamX)
+            //                {
+            //                    break;
+            //                }
 
-                            if (gemas[x, gemasVerticales[i].Y].sePinta() && gemas[x, gemasVerticales[i].Y].ColorComponente.ColorGema == color)
-                            {
-                                gemasVerticales.Add(gemas[x, gemasVerticales[i].Y]);
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
+            //                if (gemas[x, gemasVerticales[i].Y].sePinta() && gemas[x, gemasVerticales[i].Y].ColorComponente.ColorGema == color)
+            //                {
+            //                    gemasVerticales.Add(gemas[x, gemasVerticales[i].Y]);
+            //                }
+            //                else
+            //                {
+            //                    break;
+            //                }
+            //            }
+            //        }
 
-                    if (gemasHorizontales.Count < 2)
-                    {
-                        gemasHorizontales.Clear();
-                    }
-                    else
-                    {
-                        for (int j = 0; j < gemasHorizontales.Count; j++)
-                        {
-                            gemasCombinadas.Add(gemasHorizontales[j]);
-                        }
-                        break;
-                    }
+            //        if (gemasHorizontales.Count < 2)
+            //        {
+            //            gemasHorizontales.Clear();
+            //        }
+            //        else
+            //        {
+            //            for (int j = 0; j < gemasHorizontales.Count; j++)
+            //            {
+            //                gemasCombinadas.Add(gemasHorizontales[j]);
+            //            }
+            //            break;
+            //        }
 
-                }
+            //    }
 
-            }
+            //}
 
             if (gemasCombinadas.Count >= 3)
             {
@@ -582,13 +578,56 @@ public class Cuadricula : MonoBehaviour
         return null;
 
     }
+    /*
+    public bool LimpiarTodasCombinaciones()
+    {
+        bool rellenar = false;
 
+        for (int y = 0; y < tamY; y++)
+        {
+            for (int x = 0; x < tamX; x++)
+            {
+                if (gemas[x, y].SeCombina())
+                {
+                    List<Gema> combinacion = GetCombinacion(gemas[x, y], x, y);
 
+                    if (combinacion != null)
+                    {
+                        for (int i = 0; i < combinacion.Count; i++)
+                        {
+                            if (LimpiarGema(combinacion[i].X, combinacion[i].Y))
+                            {
+                                rellenar = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
+        return rellenar;
 
+    }
+    *//*
+    public bool LimpiarGema(int x, int y)
+    {
 
+        if (gemas[x, y].SeCombina() && !gemas[x, y].ComponenteCombinado.SeEstaLimpiando) ;
+        {
+            gemas[x, y].ComponenteCombinado.Clear();
+            SpawnNuevaGema(x, y, Tipo.EMPTY);
 
+            return true;
+        }
 
+        return false;
+
+    }
+
+    */
+
+    
+    
 
 
 

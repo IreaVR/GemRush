@@ -86,11 +86,22 @@ public class Gema : MonoBehaviour
 
     }
 
+    private GemaCombinada componenteCombinado;
+
+    public GemaCombinada ComponenteCombinado
+    {
+        get
+        {
+            return componenteCombinado;
+        }
+    }
+
     void Awake()
     {
 
         movimiento = GetComponent<MovimientoPieza>();
         colorComponente = GetComponent<TipoGema>();
+        componenteCombinado = GetComponent<GemaCombinada>();
 
     }
 
@@ -131,16 +142,21 @@ public class Gema : MonoBehaviour
         cuad.GemaLiberada();
     }
 
+    public bool SeCombina()
+    {
+        return componenteCombinado != null;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 
