@@ -22,3 +22,8 @@ Añadida una animación para rellenar la cuadrícula con distintas gemas.
 ### 02/05/2022 Quinta subida
 Añadido el código necesario que permita intercambiar gemas de posición. Por el momento se intercambiarán si o si, no cuando hagan una línea.
 También tengo hay fragmento de código que sirve para colocar los típicos "muros" que tiene el Candy Crush, solo que como da error, queda comentado.
+
+### 02/05/2022 Sexta subida
+Creadas funciones que permitan hacer las cambinaciones. Por ejemplo, una linea de 3, 2 líneas en forma de L y T.
+Creada una pequeña animación con Unity que simulará la desaparición de una gema al hacer una de estas combinaciones.
+Estes últimos cambios están sin implementar correctamente.
