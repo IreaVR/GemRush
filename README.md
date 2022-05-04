@@ -27,3 +27,9 @@ También tengo hay fragmento de código que sirve para colocar los típicos "mur
 Creadas funciones que permitan hacer las cambinaciones. Por ejemplo, una linea de 3, 2 líneas en forma de L y T.
 Creada una pequeña animación con Unity que simulará la desaparición de una gema al hacer una de estas combinaciones.
 Estes últimos cambios están sin implementar correctamente.
+
+### 04/05/2022 Séptima subida
+Revertidos algunos de los cambios anteriores para solucionar errores.
+Se ha eliminado la animación y comentado el código que permita hacer combinaciones en forma de T y L temporalmente. La animación impedía que se rellenase la cuadrícula.
+Solucionado el fallo de rellenar la cuadrícula, ahora se rellena de abajo hacia arriba y no al revés.
+Se han solucionado algunos errores relacionados con los muros, igualmente siguen comentados por otros fallos.
