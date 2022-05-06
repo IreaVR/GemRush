@@ -33,3 +33,8 @@ Revertidos algunos de los cambios anteriores para solucionar errores.
 Se ha eliminado la animación y comentado el código que permita hacer combinaciones en forma de T y L temporalmente. La animación impedía que se rellenase la cuadrícula.
 Solucionado el fallo de rellenar la cuadrícula, ahora se rellena de abajo hacia arriba y no al revés.
 Se han solucionado algunos errores relacionados con los muros, igualmente siguen comentados por otros fallos.
+
+### 06/05/2022 Octava subida
+Se ha creado una animación que al hacer una combinación, esta se desvanece. La animación no se ha implementado porwue hace que aparezcan y desaparezcan constantemente todas las gemas (es molesto).
+Se han añadido 3 nuevos tipos de gemas, pero por el momento solo se han introducido 2 tipos en la cuadrícula. Se han redimensionado los tamaños de las gemas Rojas, Verdes y Naranjas
+Se ha descomentado el código que permitía eliminar las combinaciones, aunque algunas no deaparecen correctamente.
