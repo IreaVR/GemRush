@@ -144,10 +144,11 @@ public class Cuadricula : MonoBehaviour
             while (FillStep())
             {
                 inverso = !inverso;
+
                 yield return new WaitForSeconds(tiempoRellenar);
             }
 
-            //rellenar = LimpiarTodasCombinaciones();
+            rellenar = LimpiarTodasCombinaciones();
 
         }
 
@@ -311,8 +312,8 @@ public class Cuadricula : MonoBehaviour
                 gema1.Movimiento.Mover(gema2.X, gema2.Y, tiempoRellenar);
                 gema2.Movimiento.Mover(gema1X, gema1Y, tiempoRellenar);
 
-                //LimpiarTodasCombinaciones();
-                //StartCoroutine(Fill());
+                LimpiarTodasCombinaciones();
+                StartCoroutine(Fill());
             }
             else
             {
@@ -432,7 +433,7 @@ public class Cuadricula : MonoBehaviour
             //                    break;
             //                }
 
-            //                if (gemas[gemasHorizontales[i].X, y].sePinta() && gemas[gemasHorizontales[i].X, y].ColorComponente.ColorGema == color)
+            //                if (/*gemas[gemasHorizontales[i].X, y].sePinta() &&*/ gemas[gemasHorizontales[i].X, y].ColorComponente.ColorGema == color)
             //                {
             //                    gemasVerticales.Add(gemas[gemasHorizontales[i].X, y]);
             //                }
@@ -460,9 +461,14 @@ public class Cuadricula : MonoBehaviour
 
             //}
 
+            //
+
             if (gemasCombinadas.Count >= 3)
             {
-
+                //for (int i = 0; i < gemasHorizontales.Count; i++)
+                //{
+                //    gemasCombinadas.Remove(gemasHorizontales[i]);
+                //}
                 return gemasCombinadas;
 
             }
@@ -538,7 +544,7 @@ public class Cuadricula : MonoBehaviour
             //                    break;
             //                }
 
-            //                if (gemas[x, gemasVerticales[i].Y].sePinta() && gemas[x, gemasVerticales[i].Y].ColorComponente.ColorGema == color)
+            //                if (/*gemas[x, gemasVerticales[i].Y].sePinta() &&*/ gemas[x, gemasVerticales[i].Y].ColorComponente.ColorGema == color)
             //                {
             //                    gemasVerticales.Add(gemas[x, gemasVerticales[i].Y]);
             //                }
@@ -566,9 +572,14 @@ public class Cuadricula : MonoBehaviour
 
             //}
 
+            //
+
             if (gemasCombinadas.Count >= 3)
             {
-
+                //for (int i = 0; i < gemasHorizontales.Count; i++)
+                //{
+                //    gemasCombinadas.Remove(gemasHorizontales[i]);
+                //}
                 return gemasCombinadas;
 
             }
@@ -578,7 +589,7 @@ public class Cuadricula : MonoBehaviour
         return null;
 
     }
-    /*
+
     public bool LimpiarTodasCombinaciones()
     {
         bool rellenar = false;
@@ -608,11 +619,11 @@ public class Cuadricula : MonoBehaviour
         return rellenar;
 
     }
-    *//*
+
     public bool LimpiarGema(int x, int y)
     {
 
-        if (gemas[x, y].SeCombina() && !gemas[x, y].ComponenteCombinado.SeEstaLimpiando) ;
+        if (gemas[x, y].SeCombina() && !gemas[x, y].ComponenteCombinado.SeEstaLimpiando)
         {
             gemas[x, y].ComponenteCombinado.Clear();
             SpawnNuevaGema(x, y, Tipo.EMPTY);
@@ -623,11 +634,6 @@ public class Cuadricula : MonoBehaviour
         return false;
 
     }
-
-    */
-
-    
-    
 
 
 

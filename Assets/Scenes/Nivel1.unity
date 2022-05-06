@@ -1215,6 +1215,7 @@ GameObject:
   - component: {fileID: 1848955205}
   - component: {fileID: 1848955210}
   - component: {fileID: 1848955208}
+  - component: {fileID: 1848955209}
   m_Layer: 0
   m_Name: GemaAzul
   m_TagString: Untagged
@@ -1308,6 +1309,10 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: c101a08b5176b8741b886aa7292a5dd9, type: 3}
   - tipo: 3
     sprite: {fileID: 21300000, guid: a359f705a7bd20342a7c2e62df9cffe2, type: 3}
+  - tipo: 5
+    sprite: {fileID: 21300000, guid: a238038bf34e3964286f8602010895ef, type: 3}
+  - tipo: 4
+    sprite: {fileID: 21300000, guid: 97aa892c91e4ea245a317b7c969da9db, type: 3}
 --- !u!114 &1848955206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1358,6 +1363,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!95 &1848955209
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848955202}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1848955210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1370,7 +1394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d0976c060b83d4419e99f4c7d5714c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animacionCombinacion: {fileID: 7400000, guid: f1176fb27e1f0dd47996064e3132f282, type: 2}
+  animacionCombinacion: {fileID: 7400000, guid: c88307bd7edbbeb46891eafb9636ce74, type: 2}
 --- !u!1 &1888245512
 GameObject:
   m_ObjectHideFlags: 0

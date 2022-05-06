@@ -12,6 +12,10 @@ public class TipoGema : MonoBehaviour
         VERDE,
         ROJA,
         NARANJA,
+        MORADA,
+        MAGENTA,
+        OSCURA,
+        DESTRUIDO,
         ANY,
         COUNT
 
