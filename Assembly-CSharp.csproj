@@ -67,6 +67,7 @@
     <Compile Include="Assets\scipts\MovimientoPieza.cs" />
     <Compile Include="Assets\scipts\TipoGema.cs" />
     <Compile Include="Assets\scipts\Manager.cs" />
+    <Compile Include="Assets\scipts\LimpiarGemaEspecial.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

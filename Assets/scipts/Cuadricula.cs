@@ -12,6 +12,8 @@ public class Cuadricula : MonoBehaviour
         EMPTY,
         NORMAL,
         MURO,  //esto es para bloquear el paso a las gemas
+        FILA,
+        COLUMNA,
         COUNT
     }
 
@@ -82,26 +84,26 @@ public class Cuadricula : MonoBehaviour
 
         //estas lienas son para poner la localizacion del muro y para decir que no aparezcan gemas debajo
         //error null object
-        //Destroy(gemas[1, 4].gameObject);
-        //SpawnNuevaGema(1, 4, Tipo.MURO);
+        Destroy(gemas[1, 4].gameObject);
+        SpawnNuevaGema(1, 4, Tipo.MURO);
 
-        //Destroy(gemas[2, 4].gameObject);
-        //SpawnNuevaGema(2, 4, Tipo.MURO);
+        Destroy(gemas[2, 4].gameObject);
+        SpawnNuevaGema(2, 4, Tipo.MURO);
 
-        //Destroy(gemas[3, 4].gameObject);
-        //SpawnNuevaGema(3, 4, Tipo.MURO);
+        Destroy(gemas[3, 4].gameObject);
+        SpawnNuevaGema(3, 4, Tipo.MURO);
 
-        //Destroy(gemas[5, 4].gameObject);
-        //SpawnNuevaGema(5, 4, Tipo.MURO);
+        Destroy(gemas[5, 4].gameObject);
+        SpawnNuevaGema(5, 4, Tipo.MURO);
 
-        //Destroy(gemas[6, 4].gameObject);
-        //SpawnNuevaGema(6, 4, Tipo.MURO);
+        Destroy(gemas[6, 4].gameObject);
+        SpawnNuevaGema(6, 4, Tipo.MURO);
 
-        //Destroy(gemas[7, 4].gameObject);
-        //SpawnNuevaGema(7, 4, Tipo.MURO);
+        Destroy(gemas[7, 4].gameObject);
+        SpawnNuevaGema(7, 4, Tipo.MURO);
 
-        //Destroy(gemas[4, 0].gameObject);
-        //SpawnNuevaGema(4, 0, Tipo.MURO);
+        Destroy(gemas[4, 0].gameObject);
+        SpawnNuevaGema(4, 0, Tipo.MURO);
 
         StartCoroutine(Fill());
 
@@ -189,6 +191,7 @@ public class Cuadricula : MonoBehaviour
                     }
 
                     //esto es para rellenar debajo del obsaculo
+                    //TODO revisar este fragmento de codigo para solucionar los fallos
                 }
                 else
                 {
@@ -210,7 +213,7 @@ public class Cuadricula : MonoBehaviour
                             if (diagX >= 0 && diagX < tamX)
                             {
 
-                                Gema gemaDiagonal = gemas[diagX, y + 1];
+                                Gema gemaDiagonal = gemas[diagX, y /*+ 1*/];
 
                                 if (gemaDiagonal.Tipo == Tipo.EMPTY)
                                 {
@@ -240,8 +243,8 @@ public class Cuadricula : MonoBehaviour
                                     {
 
                                         Destroy(gemaDiagonal.gameObject);
-                                        gema.Movimiento.Mover(diagX, y + 1, tiempoRellenar);
-                                        gemas[diagX, y + 1] = gema;
+                                        //gema.Movimiento.Mover(diagX, y + 1, tiempoRellenar); TODO
+                                        gemas[diagX, y /*+ 1*/] = gema;
                                         SpawnNuevaGema(x, y, Tipo.EMPTY);
                                         gemaMovida = true;
                                         break;
@@ -313,6 +316,20 @@ public class Cuadricula : MonoBehaviour
                 gema2.Movimiento.Mover(gema1X, gema1Y, tiempoRellenar);
 
                 LimpiarTodasCombinaciones();
+
+                if (gema1.Tipo == Tipo.FILA || gema1.Tipo == Tipo.COLUMNA)
+                {
+                    LimpiarGema(gema1.X, gema1.Y);
+                }
+
+                if (gema2.Tipo == Tipo.FILA || gema2.Tipo == Tipo.COLUMNA)
+                {
+                    LimpiarGema(gema2.X, gema2.Y);
+                }
+
+                gemaPulsada = null;
+                gemaIntroducida = null;
+
                 StartCoroutine(Fill());
             }
             else
@@ -604,11 +621,50 @@ public class Cuadricula : MonoBehaviour
 
                     if (combinacion != null)
                     {
+
+                        Tipo gemaEspecial = Tipo.COUNT;
+                        Gema gemaAleatoria = combinacion[Random.Range(0, combinacion.Count)];
+                        int gemaEspecialX = gemaAleatoria.X;
+                        int gemaEspecialY = gemaAleatoria.Y;
+
+                        if (combinacion.Count==4)
+                        {
+                            if (gemaPulsada == null || gemaIntroducida==null)
+                            {
+                                gemaEspecial = (Tipo)Random.Range((int)Tipo.FILA, (int)Tipo.COLUMNA); //1:15:31
+                            }
+                            else if (gemaPulsada.Y == gemaIntroducida.Y)
+                            {
+                                gemaEspecial = Tipo.FILA;
+                            } else
+                            {
+                                gemaEspecial = Tipo.COLUMNA;
+                            }
+                        }
+
                         for (int i = 0; i < combinacion.Count; i++)
                         {
                             if (LimpiarGema(combinacion[i].X, combinacion[i].Y))
                             {
                                 rellenar = true;
+
+                                if (combinacion[i] == gemaPulsada || combinacion[i] == gemaIntroducida)
+                                {
+                                    gemaEspecialX = combinacion[i].X;
+                                    gemaEspecialY = combinacion[i].Y;
+                                }
+
+                            }
+                        }
+
+                        if (gemaEspecial != Tipo.COUNT)
+                        {
+                            Destroy(gemas[gemaEspecialX, gemaEspecialY]);
+                            Gema nuevaGema = SpawnNuevaGema(gemaEspecialX, gemaEspecialY, gemaEspecial);
+
+                            if ((gemaEspecial == Tipo.FILA || gemaEspecial == Tipo.COLUMNA) && nuevaGema.sePinta() && combinacion[0].sePinta())
+                            {
+                                nuevaGema.ColorComponente.SetColor(combinacion[0].ColorComponente.ColorGema);
                             }
                         }
                     }
@@ -628,6 +684,8 @@ public class Cuadricula : MonoBehaviour
             gemas[x, y].ComponenteCombinado.Clear();
             SpawnNuevaGema(x, y, Tipo.EMPTY);
 
+            LimpiarObstaculos(x, y);
+
             return true;
         }
 
@@ -635,7 +693,65 @@ public class Cuadricula : MonoBehaviour
 
     }
 
+    public void LimpiarObstaculos(int x, int y)
+    {
 
+        for (int xAdyacente = x - 1; xAdyacente <= x + 1; xAdyacente++)
+        {
+            if (xAdyacente != x && xAdyacente >= 0 && xAdyacente < tamX)
+            {
+                if (gemas[xAdyacente, y].Tipo == Tipo.MURO && gemas[xAdyacente, y].SeCombina())
+                {
+                    if (gemas[xAdyacente, y].Tipo == Tipo.MURO)
+                    {
+                        Destroy(gemas[xAdyacente, y].gameObject);
 
+                    }
+                    gemas[xAdyacente, y].ComponenteCombinado.Clear();
+                    SpawnNuevaGema(xAdyacente, y, Tipo.EMPTY);
+
+                }
+            }
+        }
+
+        for (int yAdyacente = y - 1; yAdyacente <= y + 1; yAdyacente++)
+        {
+            if (yAdyacente != y && yAdyacente >= 0 && yAdyacente < tamY)
+            {
+                if (gemas[x, yAdyacente].Tipo == Tipo.MURO && gemas[x, yAdyacente].SeCombina())
+                {
+                    if (gemas[x, yAdyacente].Tipo == Tipo.MURO)
+                    {
+                        Destroy(gemas[x, yAdyacente].gameObject);
+
+                    }
+                    gemas[x, yAdyacente].ComponenteCombinado.Clear();
+                    SpawnNuevaGema(x, yAdyacente, Tipo.EMPTY);
+
+                }
+            }
+        }
+
+    }
+
+    public void limpiarFila(int fila)
+    {
+
+        for (int x = 0; x < tamX; x++)
+        {
+            LimpiarGema(x, fila);
+        }
+
+    }
+
+    public void limpiarColumna(int columna)
+    {
+
+        for (int y = 0; y < tamY; y++)
+        {
+            LimpiarGema(y, columna);
+        }
+
+    }
 
 }

@@ -24,11 +24,6 @@ public class GemaCombinada : MonoBehaviour
         gema = GetComponent<Gema>();
     }
 
-
-
-
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -41,7 +36,7 @@ public class GemaCombinada : MonoBehaviour
         
     }
 
-    public void Clear()
+    public virtual void Clear()
     {
         seEstaLimpiando = true;
         StartCoroutine(ClearCoroutine());
