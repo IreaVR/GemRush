@@ -38,3 +38,12 @@ Se han solucionado algunos errores relacionados con los muros, igualmente siguen
 Se ha creado una animación que al hacer una combinación, esta se desvanece. La animación no se ha implementado porwue hace que aparezcan y desaparezcan constantemente todas las gemas (es molesto).
 Se han añadido 3 nuevos tipos de gemas, pero por el momento solo se han introducido 2 tipos en la cuadrícula. Se han redimensionado los tamaños de las gemas Rojas, Verdes y Naranjas
 Se ha descomentado el código que permitía eliminar las combinaciones, aunque algunas no deaparecen correctamente.
+
+### 09/05/2022 Novena subida
+Creadas nuevas animaciones que se activan cuando haces una combinacion de 4 gemas (no esta bien implementada).
+Se ha creado una función que permita romper los muros (aunque la cuadrícula no se rellena correctamente por el momento).
+Se han creado 2 funciones que permitan limpiar filas y columnas (es el "poder" de las combinaciones de 4 gemas).
+Creada la clase de las gemas especiales (combinación de 4) que tiene la función que permite limpiar filas y columnas. 
+
+
+
