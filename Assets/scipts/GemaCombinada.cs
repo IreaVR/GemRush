@@ -38,6 +38,7 @@ public class GemaCombinada : MonoBehaviour
 
     public virtual void Clear()
     {
+        gema.Cuad.nivel.OnClearedGem(gema);
         seEstaLimpiando = true;
         StartCoroutine(ClearCoroutine());
     }
@@ -48,7 +49,7 @@ public class GemaCombinada : MonoBehaviour
 
         if (animator)
         {
-            animator.Play(animacionCombinacion.name);
+            //TODO animator.Play(animacionCombinacion.name);
 
             yield return new WaitForSeconds(animacionCombinacion.length);
 

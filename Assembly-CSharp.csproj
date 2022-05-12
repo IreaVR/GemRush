@@ -57,17 +57,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\scipts\Principal.cs" />
+    <Compile Include="Assets\scipts\LimpiarGemaEspecial.cs" />
     <Compile Include="Assets\scipts\Gema.cs" />
     <Compile Include="Assets\scipts\GemaCombinada.cs" />
     <Compile Include="Assets\scipts\MenuPuntuacion.cs" />
     <Compile Include="Assets\scipts\SelectorNiveles.cs" />
     <Compile Include="Assets\scipts\Cuadricula.cs" />
+    <Compile Include="Assets\scipts\LimpiarColores.cs" />
     <Compile Include="Assets\scipts\Uno.cs" />
     <Compile Include="Assets\scipts\MenuPrincipal.cs" />
     <Compile Include="Assets\scipts\MovimientoPieza.cs" />
     <Compile Include="Assets\scipts\TipoGema.cs" />
-    <Compile Include="Assets\scipts\Manager.cs" />
-    <Compile Include="Assets\scipts\LimpiarGemaEspecial.cs" />
+    <Compile Include="Assets\scipts\Nivel.cs" />
+    <Compile Include="Assets\scipts\NivelMovimientos.cs" />
+    <Compile Include="Assets\scipts\NivelObstaculos.cs" />
+    <Compile Include="Assets\scipts\NivelTiempo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

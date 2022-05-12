@@ -14,6 +14,7 @@ public class Cuadricula : MonoBehaviour
         MURO,  //esto es para bloquear el paso a las gemas
         FILA,
         COLUMNA,
+        MAX,
         COUNT
     }
 
@@ -26,11 +27,23 @@ public class Cuadricula : MonoBehaviour
 
     }
 
+    [System.Serializable]
+    public struct PosicionGema
+    {
+        public Tipo tipo;
+        public int x;
+        public int y;
+    }
+
     public int tamX, tamY;
     public float tiempoRellenar;
 
+    public Nivel nivel;
+
     public GemaPrefab[] gemaPrefabs;
     public GameObject fondoPrefab;
+
+    public PosicionGema[] gemasIniciales;
 
     private Dictionary<Tipo, GameObject> gemaPrefabDiccionario;
 
@@ -41,8 +54,9 @@ public class Cuadricula : MonoBehaviour
     private Gema gemaPulsada;
     private Gema gemaIntroducida;
 
-    // Start is called before the first frame update
-    void Start()
+    private bool finPartida=false;
+
+    void Awake ()
     {
 
         gemaPrefabDiccionario = new Dictionary<Tipo, GameObject>();
@@ -72,38 +86,26 @@ public class Cuadricula : MonoBehaviour
 
         gemas = new Gema[tamX, tamY];
 
+        for (int i = 0; i < gemasIniciales.Length; i++)
+        {
+            if (gemasIniciales[i].x >= 0 && gemasIniciales[i].x < tamX && gemasIniciales[i].y >= 0 && gemasIniciales[i].y < tamY)
+            {
+                SpawnNuevaGema(gemasIniciales[i].x, gemasIniciales[i].y, gemasIniciales[i].tipo);
+            }
+        }
+
         for (int i = 0; i < tamX; i++)
         {
             for (int j = 0; j < tamY; j++)
             {
 
-                SpawnNuevaGema(i, j, Tipo.EMPTY);
+                if (gemas[i, j] == null)
+                {
+                    SpawnNuevaGema(i, j, Tipo.EMPTY);
+                }
 
             }
         }
-
-        //estas lienas son para poner la localizacion del muro y para decir que no aparezcan gemas debajo
-        //error null object
-        Destroy(gemas[1, 4].gameObject);
-        SpawnNuevaGema(1, 4, Tipo.MURO);
-
-        Destroy(gemas[2, 4].gameObject);
-        SpawnNuevaGema(2, 4, Tipo.MURO);
-
-        Destroy(gemas[3, 4].gameObject);
-        SpawnNuevaGema(3, 4, Tipo.MURO);
-
-        Destroy(gemas[5, 4].gameObject);
-        SpawnNuevaGema(5, 4, Tipo.MURO);
-
-        Destroy(gemas[6, 4].gameObject);
-        SpawnNuevaGema(6, 4, Tipo.MURO);
-
-        Destroy(gemas[7, 4].gameObject);
-        SpawnNuevaGema(7, 4, Tipo.MURO);
-
-        Destroy(gemas[4, 0].gameObject);
-        SpawnNuevaGema(4, 0, Tipo.MURO);
 
         StartCoroutine(Fill());
 
@@ -121,7 +123,7 @@ public class Cuadricula : MonoBehaviour
         GameObject nuevaGema = (GameObject)Instantiate(gemaPrefabDiccionario[tipo], PosicionCamara(x, y), Quaternion.identity);
         nuevaGema.transform.parent = transform;
         gemas[x, y] = nuevaGema.GetComponent<Gema>();
-        Debug.Log("x: " + x + " y: " + y + " cuadricula: " + this + " tipo: " + tipo);
+        //Debug.Log("x: " + x + " y: " + y + " cuadricula: " + this + " tipo: " + tipo);
 
         gemas[x, y].Constructor(x, y, this, tipo);  
 
@@ -300,13 +302,19 @@ public class Cuadricula : MonoBehaviour
 
     public void IntercambioGemas(Gema gema1, Gema gema2)
     {
+
+        if (finPartida)
+        {
+            return;
+        }
+
         if (gema1.seMueve() && gema2.seMueve())
         {
 
             gemas[gema1.X, gema1.Y] = gema2;
             gemas[gema2.X, gema2.Y] = gema1;
 
-            if (GetCombinacion(gema1, gema2.X, gema2.Y) != null || GetCombinacion(gema2, gema1.X, gema1.Y) != null)
+            if (GetCombinacion(gema1, gema2.X, gema2.Y) != null || GetCombinacion(gema2, gema1.X, gema1.Y) != null || gema1.Tipo == Tipo.MAX || gema2.Tipo == Tipo.MAX)
             {
 
                 int gema1X = gema1.X;
@@ -314,6 +322,32 @@ public class Cuadricula : MonoBehaviour
 
                 gema1.Movimiento.Mover(gema2.X, gema2.Y, tiempoRellenar);
                 gema2.Movimiento.Mover(gema1X, gema1Y, tiempoRellenar);
+
+                if (gema1.Tipo == Tipo.MAX && gema1.SeCombina() && gema2.sePinta())
+                {
+                    LimpiarColores limpiarColor = gema1.GetComponent<LimpiarColores>();
+
+                    if (limpiarColor)
+                    {
+                        limpiarColor.Color = gema2.ColorComponente.ColorGema;
+                    }
+
+                    LimpiarGema(gema1.X, gema1.Y);
+
+                }
+
+                if (gema2.Tipo == Tipo.MAX && gema2.SeCombina() && gema1.sePinta())
+                {
+                    LimpiarColores limpiarColor = gema2.GetComponent<LimpiarColores>();
+
+                    if (limpiarColor)
+                    {
+                        limpiarColor.Color = gema1.ColorComponente.ColorGema;
+                    }
+
+                    LimpiarGema(gema2.X, gema2.Y);
+
+                }
 
                 LimpiarTodasCombinaciones();
 
@@ -331,6 +365,9 @@ public class Cuadricula : MonoBehaviour
                 gemaIntroducida = null;
 
                 StartCoroutine(Fill());
+
+                nivel.OnMove();
+
             }
             else
             {
@@ -640,6 +677,9 @@ public class Cuadricula : MonoBehaviour
                             {
                                 gemaEspecial = Tipo.COLUMNA;
                             }
+                        } else if (combinacion.Count >= 5)
+                        {
+                            gemaEspecial = Tipo.MAX;
                         }
 
                         for (int i = 0; i < combinacion.Count; i++)
@@ -665,6 +705,10 @@ public class Cuadricula : MonoBehaviour
                             if ((gemaEspecial == Tipo.FILA || gemaEspecial == Tipo.COLUMNA) && nuevaGema.sePinta() && combinacion[0].sePinta())
                             {
                                 nuevaGema.ColorComponente.SetColor(combinacion[0].ColorComponente.ColorGema);
+                            } 
+                            else if (gemaEspecial == Tipo.MAX && nuevaGema.sePinta())
+                            {
+                                nuevaGema.ColorComponente.SetColor(TipoGema.Tipo.ANY);
                             }
                         }
                     }
@@ -751,6 +795,48 @@ public class Cuadricula : MonoBehaviour
         {
             LimpiarGema(y, columna);
         }
+
+    }
+
+    public void LimpiarColor(TipoGema.Tipo color)
+    {
+        for (int x = 0; x < tamX; x++)
+        {
+            for (int y = 0; y < tamY; y++)
+            {
+                if (gemas[x, y].sePinta() && (gemas[x, y].ColorComponente.ColorGema == color || color == TipoGema.Tipo.ANY))
+                {
+                    LimpiarGema(x, y);
+                }
+            }
+        }
+    }
+
+    public void FinPartida()
+    {
+
+        finPartida = true;
+
+    }
+
+    //TODO Tipo?
+    public List<Gema> GetTipoGemas(Tipo tipo)
+    {
+
+        List<Gema> tipoGemas = new List<Gema>();
+
+        for (int x = 0; x < tamX; x++)
+        {
+            for (int y = 0; y < tamY; y++)
+            {
+                if (gemas[x, y].Tipo == tipo)
+                {
+                    tipoGemas.Add(gemas[x, y]);
+                }
+            }
+        }
+
+        return tipoGemas;
 
     }
 

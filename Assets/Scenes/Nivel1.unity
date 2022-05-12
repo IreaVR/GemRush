@@ -699,6 +699,55 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1261737212
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1261737214}
+  - component: {fileID: 1261737213}
+  m_Layer: 0
+  m_Name: Nivel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1261737213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261737212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c0b39d62155eb0498cadc6edd11b4b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cuad: {fileID: 1732718650}
+  estrella1: 15000
+  estrella2: 18000
+  estrella3: 21000
+  numMovimientos: 14
+  puntuacionNivel: 15000
+--- !u!4 &1261737214
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1261737212}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.97040087, y: -0.42525384, z: -5.371581}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1487764850
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,9 +937,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eae18376ab6b024383e1a251de80e39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tamX: 9
-  tamY: 9
+  tamX: 6
+  tamY: 7
   tiempoRellenar: 0.1
+  nivel: {fileID: 1261737213}
   gemaPrefabs:
   - tipo: 0
     prefab: {fileID: 5596543701538065069, guid: c813ca3fe0a3d42418b04d7930396868, type: 3}
@@ -900,9 +950,12 @@ MonoBehaviour:
     prefab: {fileID: 2063145105}
   - tipo: 3
     prefab: {fileID: 93260271238864316, guid: d2a170cf609887340be3f70797b479bc, type: 3}
+  - tipo: 5
+    prefab: {fileID: 5831815470064451689, guid: a6e48637cf08a184a99e549e2fdaec41, type: 3}
   - tipo: 4
     prefab: {fileID: 1920622100761082114, guid: 18cd6b68044e6f14d8737b1ca5d985fa, type: 3}
   fondoPrefab: {fileID: 1888245512}
+  gemasIniciales: []
 --- !u!4 &1732718651
 Transform:
   m_ObjectHideFlags: 0
@@ -1042,6 +1095,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 457954288e1a92f4093bca62cf747c1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  puntuacion: 100
 --- !u!114 &1848955207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1327,6 +1381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 457954288e1a92f4093bca62cf747c1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  puntuacion: 500
 --- !u!212 &2063145107
 SpriteRenderer:
   m_ObjectHideFlags: 0

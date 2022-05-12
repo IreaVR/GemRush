@@ -6,6 +6,8 @@ using static TipoGema;
 public class Gema : MonoBehaviour
 {
 
+    public int puntuacion;
+
     private int x, y;
 
     public int X
