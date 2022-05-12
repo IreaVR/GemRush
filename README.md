@@ -45,5 +45,10 @@ Se ha creado una función que permita romper los muros (aunque la cuadrícula no
 Se han creado 2 funciones que permitan limpiar filas y columnas (es el "poder" de las combinaciones de 4 gemas).
 Creada la clase de las gemas especiales (combinación de 4) que tiene la función que permite limpiar filas y columnas. 
 
-
-
+### 12/05/2022 Décima subida
+Crada la escena principal de los niveles, la del nivel 2 y la del 3.
+Creada la clase LimpiarColores que nos permitirá eliminar todas las gemas de un mismo color (poder de la gema de una combinación de 5).
+Creada la clase Nivel con funciones comunes para cada nivel (determinar si se gana o pierde, puntuación,...).
+Creada la clase NivelMovimiento, nivel que se tendrá que completar antes de que se agoten todos los turnos.
+Creada la clase NivelObstaculos, nivel que se tendrá que completar al limpiar todos los obstáculos y llegar al mínimo de puntos.
+Creada la clase NivelTiempo, nivel que se tendrá que completar antes de que se agote el tiempo.
