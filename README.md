@@ -52,3 +52,12 @@ Creada la clase Nivel con funciones comunes para cada nivel (determinar si se ga
 Creada la clase NivelMovimiento, nivel que se tendrá que completar antes de que se agoten todos los turnos.
 Creada la clase NivelObstaculos, nivel que se tendrá que completar al limpiar todos los obstáculos y llegar al mínimo de puntos.
 Creada la clase NivelTiempo, nivel que se tendrá que completar antes de que se agote el tiempo.
+
+
+### 16/05/2022 Undécima subida
+Creada animación de un menú que saldrá al acabar la paritda.
+Añadida la escenas para el selector de niveles.
+Creadas 2 clases que permitirán al selector de niveles acceder a los niveles 2 y 3.
+Creada la clase FinPartida que mostrará un menú que al acabar la partida mostrará si se ha ganado o perdido. (Tiene fallos)
+Creada la clase HUD, que se encrgará de la parte gráfica, así como determinar la cantidad de estrellas que se obtienen, el objetivo, la puntuación mínima de los niveles, el tipo de los mismos... Todo esto se mostrará en su respectivo nivel en unos cuadrados "informativos".
+En principio ya estaría toda o la gran parte de la parte de programación del juego, solo quedaría tratar de solucionar fallos y cambiar gran parte de los gráficos que estaban temporalmente.
