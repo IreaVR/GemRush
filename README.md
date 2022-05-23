@@ -53,7 +53,6 @@ Creada la clase NivelMovimiento, nivel que se tendrá que completar antes de que
 Creada la clase NivelObstaculos, nivel que se tendrá que completar al limpiar todos los obstáculos y llegar al mínimo de puntos.
 Creada la clase NivelTiempo, nivel que se tendrá que completar antes de que se agote el tiempo.
 
-
 ### 16/05/2022 Undécima subida
 Creada animación de un menú que saldrá al acabar la paritda.
 Añadida la escenas para el selector de niveles.
@@ -61,3 +60,23 @@ Creadas 2 clases que permitirán al selector de niveles acceder a los niveles 2 
 Creada la clase FinPartida que mostrará un menú que al acabar la partida mostrará si se ha ganado o perdido. (Tiene fallos)
 Creada la clase HUD, que se encrgará de la parte gráfica, así como determinar la cantidad de estrellas que se obtienen, el objetivo, la puntuación mínima de los niveles, el tipo de los mismos... Todo esto se mostrará en su respectivo nivel en unos cuadrados "informativos".
 En principio ya estaría toda o la gran parte de la parte de programación del juego, solo quedaría tratar de solucionar fallos y cambiar gran parte de los gráficos que estaban temporalmente.
+
+### 22/05/2022 Duodécima subida
+Añadidas e implementadas tipografías para el proyecto. 
+Modificadas algunas escenas para dejarlas algo más "bonitas".
+Movidos todos los prefabs a una carpeta prefabs.
+Creadas las escenas Menú Principal y Créditos.
+Refactorizados algunos métodos y variables para que se entienda mejor. 
+Añadidos algunos comentariospara explicar que hace cada método.
+Eliminados comentarios y código que daba problemas (bugs) y que no se iban a solucionar por falta de tiempo.
+Solucionados otros pocos bugs.
+Comentado el "poder" de las gemas producto de una combinación de 4 para eitar bugs.
+Añadidos nuevos métodos al manager para navegar entre las pantallas.
+
+### 23/05/2022 Decimotercera subida
+Modificado el canvas porque surigió un error.
+Creado un segundo prefab para canvas para solucionar este error.
+Creada la escena de Ayuda. 
+Reorganizados algunos elementos de las escenas, como botones, menús, etc.
+Añadida toda la documentación en el código del proyecto.
+Añadido icono para el botón de créditos.
