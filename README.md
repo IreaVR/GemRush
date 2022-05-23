@@ -16,15 +16,15 @@ La clase TipoGema nos indicará las catacterísticas de la gema (como el tipo, e
 Añadida una propiedad para el movimiento de las gemas.
 Añadida la función para rellenar los cuadrados con distintos tipos de gemas (contiene un error del tipo NullPointerException)
 
-### 25/04/2022 Cuarta subida
+## 25/04/2022 Cuarta subida
 Solucionado el error de la subida anterior.
 Añadida una animación para rellenar la cuadrícula con distintas gemas.
 
-### 02/05/2022 Quinta subida
+## 02/05/2022 Quinta subida
 Añadido el código necesario que permita intercambiar gemas de posición. Por el momento se intercambiarán si o si, no cuando hagan una línea.
 También tengo hay fragmento de código que sirve para colocar los típicos "muros" que tiene el Candy Crush, solo que como da error, queda comentado.
 
-### 02/05/2022 Sexta subida
+## 02/05/2022 Sexta subida
 Creadas funciones que permitan hacer las cambinaciones. Por ejemplo, una linea de 3, 2 líneas en forma de L y T.
 Creada una pequeña animación con Unity que simulará la desaparición de una gema al hacer una de estas combinaciones.
 Estes últimos cambios están sin implementar correctamente.
@@ -46,7 +46,7 @@ Se ha creado una función que permita romper los muros (aunque la cuadrícula no
 Se han creado 2 funciones que permitan limpiar filas y columnas (es el "poder" de las combinaciones de 4 gemas).
 Creada la clase de las gemas especiales (combinación de 4) que tiene la función que permite limpiar filas y columnas. 
 
-### 12/05/2022 Décima subida
+## 12/05/2022 Décima subida
 Crada la escena principal de los niveles, la del nivel 2 y la del 3.
 Creada la clase LimpiarColores que nos permitirá eliminar todas las gemas de un mismo color (poder de la gema de una combinación de 5).
 Creada la clase Nivel con funciones comunes para cada nivel (determinar si se gana o pierde, puntuación,...).
@@ -74,7 +74,7 @@ Solucionados otros pocos bugs.
 Comentado el "poder" de las gemas producto de una combinación de 4 para eitar bugs.
 Añadidos nuevos métodos al manager para navegar entre las pantallas.
 
-### 23/05/2022 Decimotercera subida
+## 23/05/2022 Decimotercera subida
 Modificado el canvas porque surigió un error.
 Creado un segundo prefab para canvas para solucionar este error.
 Creada la escena de Ayuda. 
